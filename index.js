@@ -10,6 +10,8 @@ if (process.env.NODE_ENV === 'development') {
   dotenv.config();
 }
 
+const PORT = process.env.PORT || 3000;
+
 const app = express();
 
 app.use(cors());
@@ -81,6 +83,6 @@ app.get('*', (req, res) => {
   res.redirect('/');
 });
 
-app.listen(3000, () => {
-  console.log('app listening on http://127.0.0.1:3000');
+app.listen(PORT, () => {
+  console.log(`app listening on http://127.0.0.1:${PORT}`);
 });
