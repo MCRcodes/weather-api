@@ -1,9 +1,40 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Manchester Codes Weather API</title>
-</head>
-<body>
-  <h1>Manchester Codes Weather API</h1>
-</body>
+  <head>
+    <title>Manchester Codes Weather API</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+  </head>
+  <body>
+    <h1>Manchester Codes Weather API</h1>
+
+    <h2>Endpoints</h2>
+
+    <h3><code>GET /forecast</code></h3>
+
+    <p>Returns a 5 day forecast for the weather in Manchester.</p>
+
+    <h4>Response:</h4>
+    <pre>
+{
+  "location": {
+    "city": "City name - String",
+    "country": "Country name - String",
+  },
+  "forecasts": [{
+    "date": "Forecast date (Unix Timestamp Milliseconds) - Integer",
+    "temperature": {
+      "max": "Max temperature for day (celcius) - Integer",
+      "min": "Min temperature for day (celcius) - Integer"
+    },
+    "wind": {
+      "speed": "Wind speed (mph) - Integer",
+      "direction": "Wind direction (e.g. n, sw) - String"
+    },
+    "humidity": "Humidity - Integer",
+    "description": "Overall description of weather - String",
+    "icon": "Icon ID - Number"
+  }]
+}
+    </pre>
+  </body>
 </html>
