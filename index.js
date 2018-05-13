@@ -3,8 +3,11 @@ const cors = require('cors');
 const axios = require('axios');
 const dotenv = require('dotenv');
 const path = require('path');
+const fs = require('fs');
 const moment = require('moment');
 const { groupWith } = require('ramda');
+
+const citiesFile = path.join(__dirname, 'cities.json');
 
 if (process.env.NODE_ENV === 'development') {
   dotenv.config();
@@ -59,24 +62,47 @@ const formatData = data => ({
 
 const sameDate = (a, b) => moment(a.date).isSame(b.date, 'day');
 
-app.get('/forecast', (req, res) => {
-  axios.get('https://api.openweathermap.org/data/2.5/forecast', {
-    params: {
-      id: 2643123,
-      appId: process.env.OWM_API_KEY,
-      units: 'metric',
-    },
-  })
-    .then(response => {
-      const forecasts = formatData(response.data);
+const getCityIdByName = (name, cb) => {
+  fs.readFile(citiesFile, 'utf8', (error, data) => {
+    if (error) {
+      cb(error, null);
+    } else {
+      const cities = JSON.parse(data);
+      const id = cities.some(city => city.name.toLowerCase() === name.toLowerCase()) ?
+        cities.find(city => city.name.toLowerCase() === name.toLowerCase()).id :
+        null;
+      cb(null, id);
+    }
+  });
+};
 
-      res.status(200).json({
-        ...forecasts,
-        forecasts: groupWith(sameDate, forecasts.forecasts)
-          .map(([day]) => day)
-          .slice(0, 5),
+app.get('/forecast', (req, res) => {
+  getCityIdByName(req.query.city || 'Manchester', (error, id) => {
+    if (error) {
+      res.sendStatus(500);
+    } else if (!id) {
+      res.sendStatus(404);
+    } else {
+      axios.get('https://api.openweathermap.org/data/2.5/forecast', {
+        params: {
+          id,
+          appId: process.env.OWM_API_KEY,
+          units: 'metric',
+        },
+      }).then((response) => {
+        const forecasts = formatData(response.data);
+
+        res.status(200).json({
+          ...forecasts,
+          forecasts: groupWith(sameDate, forecasts.forecasts)
+            .map(([day]) => day)
+            .slice(0, 5),
+        });
+      }).catch(() => {
+        res.sendStatus(500);
       });
-    });
+    }
+  });
 });
 
 app.get('*', (req, res) => {

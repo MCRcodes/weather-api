@@ -4,9 +4,22 @@
 
 ### `GET /forecast`
 
-Returns a 5 day forecast for the weather in Manchester.
+Returns a 5 day weather forecast.
+
+#### Request:
+##### Query Parameters:
+- city - the city to get the forecast for - defaults to Manchester
+
+e.g. `https://https://mcr-codes-weather.herokuapp.com/forecast?city=London`
 
 #### Response:
+##### Status Codes:
+- 200 - Success
+- 404 - Returned when the city is not found
+- 500 - Server Error
+
+##### Response Data Structure:
+
 ```json
 {
   "location": {

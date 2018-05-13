@@ -11,9 +11,25 @@
 
     <h3><code>GET /forecast</code></h3>
 
-    <p>Returns a 5 day forecast for the weather in Manchester.</p>
+    <p>Returns a 5 day weather forecast.</p>
+
+    <h4>Request:</h4>
+    <h5>Query Parameters:</h5>
+    <ul>
+      <li>city - the city to get the forecast for - defaults to Manchester</li>
+    </ul>
+
+    <p>e.g. <code>https://https://mcr-codes-weather.herokuapp.com/forecast?city=London</code></p>
 
     <h4>Response:</h4>
+    <h5>Status Codes</h5>
+    <ul>
+      <li>200 - Success</li>
+      <li>404 - Returned when the city is not found</li>
+      <li>500 - Server Error</li>
+    </ul>
+
+    <h5>Response Data Structure:</h5>
     <pre>
 {
   "location": {
