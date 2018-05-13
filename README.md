@@ -10,7 +10,7 @@ Returns a 5 day weather forecast.
 ##### Query Parameters:
 - city - the city to get the forecast for - defaults to Manchester
 
-e.g. `https://https://mcr-codes-weather.herokuapp.com/forecast?city=London`
+e.g. [`https://mcr-codes-weather.herokuapp.com/forecast?city=London`](https://mcr-codes-weather.herokuapp.com/forecast?city=London)
 
 #### Response:
 ##### Status Codes:
