@@ -6,6 +6,7 @@ const path = require('path');
 const fs = require('fs');
 const moment = require('moment');
 const { groupWith } = require('ramda');
+const rateLimit = require("express-rate-limit");
 
 const citiesFile = path.join(__dirname, 'cities.json');
 
@@ -18,6 +19,11 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(cors());
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 60 // limit each IP to 15 requests per windowMs
+});
+app.use(limiter);
 app.use(express.static(path.resolve(__dirname, './public')))
 
 const getWindDirection = (deg) => {
